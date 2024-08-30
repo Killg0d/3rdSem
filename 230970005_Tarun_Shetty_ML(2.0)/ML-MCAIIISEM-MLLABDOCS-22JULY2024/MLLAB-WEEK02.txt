@@ -1,0 +1,19 @@
+ML LAB MCA III SEM - WEEK02- EXERCISES
+***************************************
+
+1) EXPLORE AND IMPLIMENT RANGE AND ARANGE FUNCTIONS
+
+2) EXPLORE AND IMPLIMENT LINSPACE FUNCTION
+
+3) USING MATPLOTLIB PERFORM THE FOLLOWING: 
+    a) Simple Scatter Plot
+    b) Sine curve plot
+    c) Data generation using random function
+    d) Histograms, bar plots, box plot
+
+4) Matrix Operations:
+     a) Matrix creation using numpy arrays
+     b) Matrix addition and multiplication using coding and built in functions: matmul, matrix transpose, matrix inversion
+
+5) Convert Lists to arrays and Arrays to list using numpy arrays
+
