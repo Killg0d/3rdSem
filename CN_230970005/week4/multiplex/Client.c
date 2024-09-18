@@ -1,16 +1,13 @@
 //tarun
 //230970005
 //22-8-24
-//4. Write a client server program using message queue to book multiplex tickets. Assume that there are 5 ticket categories and each category there are 20 tickets. Assume that this is pre-stored information and available at server. From client program, User inputs- Name, Phone no, Ticket category and Number of tickets and pass it to server for ticket reservation. Depending on users input, decrement the number of seats in corresponding category, send booking information to client for displaying on the screen.
+//1.Write a client server program using message queue to sort array of elements. Client takes input from user a set of integers and send to server using message queue for sorting. The server reads message queue and return sorted array to client for displaying at client.
 #include "../autoinclude.h"
-struct msgbuf
+typedef struct msgbuf
 {
 	long mtype;
-	char name[20];
-	int phone;
-	int cat;
-	int no_of_tickets;
-	int response;
+	int size;
+	int mtext[100];
 };
 int main()
 {
@@ -24,35 +21,23 @@ int main()
 		die("msgget");
 	sbuf.mtype = 1;
 	
-	printf("\nEnter name:");
-	scanf("%s",sbuf.name);
-	printf("\nEnter phone:");
-	scanf("%d",&sbuf.phone);
-	do
-	{
-		printf("\nEnter category(1-5):");
-		scanf("%d",&sbuf.cat);
-	}while(sbuf.cat<1||sbuf.cat>5);
-	printf("\nEnter no_of_tickets:");
-	scanf("%d",&sbuf.no_of_tickets);
-
+	printf("Enter the size of array:");
+	scanf("%d",&sbuf.size);
+	printf("Enter the elements:");
+	for(int i=0;i<sbuf.size;i++)
+		scanf("%d",&sbuf.mtext[i]);
 	buflen=sizeof(struct msgbuf)-sizeof(long);
 	if (msgsnd(msqid, &sbuf, buflen, IPC_NOWAIT) < 0)
 	{
+		printf ("%d, %ld, %d, %d\n", msqid, sbuf.mtype, sbuf.mtext[0], buflen);
 		die("msgsnd");
 	}
 	else
 		printf("Message Sent");
 	if (msgrcv(msqid, &rcvbuf, buflen, 2, 0) < 0)
 		die("msgrcv");
-	if(rcvbuf.response==0)
-	{
-		printf("\nName:%s\nPhone:%d\nCategory:%d\nNo of tickets:%d\n",sbuf.name,sbuf.phone,sbuf.cat,sbuf.no_of_tickets);
-	}
-	else
-	{
-		printf("\nTicket not available");
-	}
-	printf("\n");
+	printf("\nSorted Array is:");
+	for(int i=0;i<rcvbuf.size;i++)
+		printf("%d\t", rcvbuf.mtext[i]);
 	return 0;
 }

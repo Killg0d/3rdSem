@@ -28,7 +28,7 @@ int main()
 	char buffer[100];
 	ssize_t bytesRead;
 	
-	bytesRead = read(fd, buffer, sizeof(buffer) - 1);
+	bytesRead = read(fd, buffer, sizeof(buffer));
 	if (bytesRead == -1) {
 	perror("Error reading from stdin");
 	return 1;

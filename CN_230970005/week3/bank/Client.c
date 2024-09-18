@@ -27,9 +27,9 @@ int main()
 		exit(1);
 	}
 	int months,deposits;
-	printf("Enter deposit amount");
+	printf("Enter deposit amount:");
 	scanf("%d",&deposits);
-	printf("Enter tenure months");
+	printf("Enter tenure years:");
 	scanf("%d",&months);
 	write(fdc,&deposits,sizeof(deposits));
 	write(fdc,&months,sizeof(months));

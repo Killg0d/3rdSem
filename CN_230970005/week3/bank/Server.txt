@@ -34,31 +34,37 @@ int main()
 		exit(1);
 	}
 	
-	int deposits,year,si,maturity;
+	int deposits,month,si,maturity;
 	
 	nread=read(fdc,&deposits,sizeof(deposits));
 	if(nread)
 	{
-		read(fdc,&year,sizeof(year));
-		if(year<=1)
+		read(fdc,&month,sizeof(month));
+		if(month<=12)
 		{
-			si=(deposits*year*0.05)/100;
-		}
-		else if(year<=2)
-		{	si=(deposits*year*0.06)/100;
-		}
-		else if(year<=3)
-		{
+			si=(deposits*month*0.05)/100;
+			maturity=deposits+si;
 			write(fdc,&(maturity),sizeof(maturity));
+			write(fdc,&si,sizeof(si));
+			
+		}
+		else if(month<=24)
+		{	si=(deposits*month*0.06)/100;
+			write(fdc,&(maturity),sizeof(maturity));
+			write(fdc,&si,sizeof(si));
+		}
+		else if(month<=36)
+		{
+			si=(deposits*month*0.07)/100;
+			write(fdc,&(maturity),sizeof(maturity));
+			write(fdc,&si,sizeof(si));
 		}
 		else
 		{
-			si=(deposits*year*0.08)/100;
+			si=(deposits*month*0.08)/100;
+			write(fdc,&(maturity),sizeof(maturity));
+			write(fdc,&si,sizeof(si));
 		}
-		maturity=deposits+si;
-		printf("Year = %d Deposit = %d Si=%d",deposits,year,si);
-		write(fdc,&(maturity),sizeof(maturity));
-		write(fdc,&si,sizeof(si));
 		
 		 	
 	}

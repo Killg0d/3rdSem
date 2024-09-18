@@ -1,21 +1,17 @@
 //tarun
 //230970005
 //22-8-24
-//4. Write a client server program using message queue to book multiplex tickets. Assume that there are 5 ticket categories and each category there are 20 tickets. Assume that this is pre-stored information and available at server. From client program, User inputs- Name, Phone no, Ticket category and Number of tickets and pass it to server for ticket reservation. Depending on users input, decrement the number of seats in corresponding category, send booking information to client for displaying on the screen.
+//1.Write a client server program using message queue to sort array of elements. Client takes input from user a set of integers and send to server using message queue for sorting. The server reads message queue and return sorted array to client for displaying at client.
 #include "../autoinclude.h"
 
-struct msgbuf
+typedef struct msgbuf
 {
 	long mtype;
-	char name[20];
-    	int phone;
-    	int cat;
-    	int no_of_tickets;
-    	int response;
+	int size;
+	int mtext[100];
 };
 int main()
 {
-	int tickets[5] = {20, 20, 20, 20, 20};
 	int msqid;
 	key_t key;
 	struct msgbuf rcvbuf;
@@ -28,15 +24,22 @@ int main()
 	size_t buflen=sizeof(rcvbuf)-sizeof(long);
 	if (msgrcv(msqid, &rcvbuf, buflen, 1, 0) < 0)
 		die("msgrcv");
-	int num=rcvbuf.cat-1;
-	if(rcvbuf.no_of_tickets<tickets[num])
-	{
-		tickets[num]-=rcvbuf.no_of_tickets;
-		rcvbuf.response=0;
-	}
+	for(int i=0;i<rcvbuf.size;i++)
+        {
+            for(int j=rcvbuf.size-1;j>i;j--)
+            {
+                if(rcvbuf.mtext[i]>rcvbuf.mtext[j])
+                {
+                    int temp=rcvbuf.mtext[i];
+                    rcvbuf.mtext[i]=rcvbuf.mtext[j];
+                    rcvbuf.mtext[j]=temp;
+                }
+            }
+        }
         rcvbuf.mtype=2;
         if (msgsnd(msqid, &rcvbuf, buflen, IPC_NOWAIT) < 0)
 	{
+		printf ("%d, %ld, %d, %d\n", msqid, rcvbuf.mtype, rcvbuf.mtext[0], buflen);
 		die("msgsnd");
 	}
 	else
